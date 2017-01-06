@@ -21,11 +21,11 @@ That's it.
 See https://developer.ciscospark.com/index.html
 
 Get your access key and room id.
-Edit test.sh to set your environment variables.
+Edit sample-test.sh to set your environment variables.
 Edit package_config.ini properly.
 
-Then, execute test.sh.
+Then, execute sample-test.sh.
 
-    % sh test.sh
+    % sh sample-test.sh
 
 Enjoy.
