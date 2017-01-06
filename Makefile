@@ -1,5 +1,5 @@
 
-TARGETS= post
+TARGETS= sparkbot-notify
 
 ifndef LDFLAGS
 LDFLAGS+=-L/usr/local/lib
