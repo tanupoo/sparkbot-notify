@@ -4,6 +4,12 @@ spartbot-notify
 This is a ultra simple Spark Bot submitting a timestamp
 to the room you specified.
 
+## How to clone it.
+
+Don't forget to add --recursive option.
+
+    % git clone --recursive https://github.com/tanupoo/sparkbot-notify.git
+
 ## How to build it.
 
 You need to add tini module from github.
