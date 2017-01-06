@@ -1,10 +1,12 @@
 
 TARGETS= post
 
+ifndef LDFLAGS
 LDFLAGS+=-L/usr/local/lib
-LDLIBS+=-lcurl
-
 LDFLAGS+=-Lioxutil
+endif
+
+LDLIBS+=-lcurl
 LDLIBS+=-lioxutil
 
 OBJS= xcurl_ext_debug.o xcurl_write_data.o
