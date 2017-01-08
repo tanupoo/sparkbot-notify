@@ -153,6 +153,7 @@ run(void)
 		xcurl_set_ext_debug(curl);
 
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, g_verify_peer);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, g_verify_peer);
 
 	/* set callback */
 	wd = xcurl_init_write_data();
