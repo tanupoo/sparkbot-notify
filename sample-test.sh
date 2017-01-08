@@ -13,4 +13,4 @@ export CAF_APP_DIR="/app_dir"
 export CAF_MODULES_DIR="/module_dir"
 export CAF_APP_ID="1111"
 
-./post -dd
+./sparkbot-notify -dd
