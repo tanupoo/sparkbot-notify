@@ -69,7 +69,7 @@ $(TEST_TARGETS): $(TEST_OBJS)
 #	$(CC) $(CFLAGS) -c $<
 
 lib$(BASENAME).a: $(OBJS)
-	ar rv $@ $^
+	$(AR) rv $@ $^
 
 lib$(BASENAME).so: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
