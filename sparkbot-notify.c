@@ -22,6 +22,7 @@ char *g_auth_key = NULL;
 char *g_room_id = NULL;
 char *g_dialect = NULL;
 int g_frequency = 0;
+int g_verify_peer = 1;
 
 int f_debug = 0;
 
@@ -49,6 +50,7 @@ get_caf_env()
 	ioxutil_config_get("spark", "room_id", &g_room_id, NULL);
 	ioxutil_config_get("spark", "dialect", &g_dialect, NULL);
 	ioxutil_config_getint("spark", "frequency", &g_frequency, 60);
+	ioxutil_config_getbool("spark", "verify_peer", &g_verify_peer, 1);
 
 	return 0;
 }
@@ -149,6 +151,8 @@ run(void)
 	/* set debug options */
 	if (f_debug > 1)
 		xcurl_set_ext_debug(curl);
+
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, g_verify_peer);
 
 	/* set callback */
 	wd = xcurl_init_write_data();
