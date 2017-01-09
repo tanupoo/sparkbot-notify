@@ -23,13 +23,35 @@ That's it.
 
 ## How to run it.
 
+1. Get your access key and room id.
+
 See https://developer.ciscospark.com/index.html
 
-1. Get your access key and room id.
-2. Edit sample-test.sh to set your environment variables.
-3. Edit package_config.ini properly.
-4. Then, execute sample-test.sh.
+2. Edit your configuration file properly.  
 
-    % sh sample-test.sh
+For example,
+
+    % cat config.ini 
+    [spark]
+    server_url = https://api.ciscospark.com/v1/messages
+    verify_peer = false
+    auth_key = N2Q1...YmMz
+    room_id = Y2lz...MWI0
+    dialect = Now, it's %H:%M:%S.
+    frequency = 10
+
+3. Set the path of your configuration file into CAF_APP_PATH.
+   Set the file name of the one into CAF_APP_CONFIG_FILE.
+
+    % export CAF_APP_PATH="./"
+    % export CAF_APP_CONFIG_FILE="config.ini"
+
+4. Then, launch it.
+
+    % spartbot-notify
+
+with the -d option(s), you can see more information.
+See sample-test.sh for your reference.
 
 Enjoy.
+
