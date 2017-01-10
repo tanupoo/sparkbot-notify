@@ -23,11 +23,11 @@ That's it.
 
 ## How to run it.
 
-1. Get your access key and room id.
+- Get your access key and room id.
 
 See https://developer.ciscospark.com/index.html
 
-2. Edit your configuration file properly.  
+- Edit your configuration file properly.  
 
 For example,
 
@@ -40,13 +40,13 @@ For example,
     dialect = Now, it's %H:%M:%S.
     frequency = 10
 
-3. Set the path of your configuration file into CAF_APP_PATH.
+- Set the path of your configuration file into CAF_APP_PATH.
    Set the file name of the one into CAF_APP_CONFIG_FILE.
 
     % export CAF_APP_PATH="./"
     % export CAF_APP_CONFIG_FILE="config.ini"
 
-4. Then, launch it.
+- Then, launch it.
 
     % spartbot-notify
 
