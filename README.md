@@ -40,8 +40,10 @@ For example,
     dialect = Now, it's %H:%M:%S.
     frequency = 10
 
-- Set the path of your configuration file into CAF_APP_PATH.
-   Set the file name of the one into CAF_APP_CONFIG_FILE.
+- Set the environment variables.
+
+Set the path of your configuration file into CAF_APP_PATH.
+Set the file name of the one into CAF_APP_CONFIG_FILE.
 
     % export CAF_APP_PATH="./"
     % export CAF_APP_CONFIG_FILE="config.ini"
