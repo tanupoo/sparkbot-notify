@@ -69,7 +69,7 @@ mk_text(char *buf, size_t buf_len)
 	if (len >= buf_len)
 	       return -1;
 
-	return len < buf_len ? 0 : -1;
+	return len < buf_len ? len : -1;
 }
 
 int
@@ -89,37 +89,11 @@ mk_body(char *msg, char *buf, int buf_len)
 	return len < buf_len ? 0 : -1;
 }
 
-const char *
-get_loadmsg()
-{
-	static int total_0 = 0, work_0 = 0;
-	int total_1 = 0, work_1 = 0;
-	float total_d, work_d, cpu_d;
-
-	if (get_cpuload(&total_1, &work_1) < 0) {
-		warnx("ERROR: failed to get cpu load.");
-		return "...?";
-	}
-	if (!work_0) {
-		total_0 = total_1;
-		work_0 = work_1;
-		return "...";
-	}
-	
-	total_d = total_1 - total_0;
-	work_d = work_1 - work_0;
-	cpu_d = work_d / total_d * 100.;
-
-	total_0 = total_1;
-	work_0 = work_1;
-
-	return get_msg(cpu_d);
-}
-
 int
 post_data(CURL *curl)
 {
 	CURLcode res = 0;
+	int len;
 
 	char *text_buf;
 	int text_len = 256;
@@ -135,8 +109,10 @@ post_data(CURL *curl)
 
 	/* set body */
 	text_buf[0] = '\0';
-	mk_text(text_buf, text_len);
-	strcat(text_buf, get_loadmsg());
+	len = mk_text(text_buf, text_len);
+#if 1
+	add_cpuload_msg(text_buf, text_len);
+#endif
 
 	msg_buf[0] = '\0';
 	mk_body(text_buf, msg_buf, msg_len);

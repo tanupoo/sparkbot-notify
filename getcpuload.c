@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Shoichi Sakane <sakane@tanu.org>, All rights reserved.
+ * Copyright (C) 2017 Shoichi Sakane <sakane@tanu.org>, All rights reserved.
  * See the file LICENSE in the top level directory for more details.
  */
 #include <sys/types.h>
@@ -10,10 +10,12 @@
 #include <string.h>
 #include <err.h>
 
-struct tweet_t {
+struct cpu_usage_tweet_t {
 	float level;
 	char *msg;
-} tw[] = {
+};
+
+static struct cpu_usage_tweet_t tw[] = {
 	{  10., "..." },
 	{  20., "よゆう" },
 	{  50., "ばっちこーい！" },
@@ -24,7 +26,7 @@ struct tweet_t {
 
 static int f_debug = 0;
 
-const char *
+static const char *
 get_msg(float level)
 {
 	int i;
@@ -38,7 +40,7 @@ get_msg(float level)
 }
 
 int
-get_cpuload(int *sum, int *sum3)
+get_cpu_load(int *sum, int *sum3)
 {
 	FILE *fp;
 	char buf[512];
@@ -96,28 +98,82 @@ get_cpuload(int *sum, int *sum3)
 	return 0;
 }
 
+float
+get_cpu_usage()
+{
+	static int total_0 = 0, work_0 = 0;
+	int total_1 = 0, work_1 = 0;
+	float total_d, work_d, cpu_d;
+
+	if (get_cpu_load(&total_1, &work_1) < 0) {
+		warnx("ERROR: failed to get cpu load.");
+		return -1;
+	}
+
+	if (!work_0) {
+		total_0 = total_1;
+		work_0 = work_1;
+		return 1000;
+	}
+
+	total_d = total_1 - total_0;
+	work_d = work_1 - work_0;
+	cpu_d = work_d / total_d * 100.;
+
+	total_0 = total_1;
+	work_0 = work_1;
+
+	return cpu_d;
+}
+
+int
+add_cpuload_msg(char *buf, int buflen)
+{
+	float usage = 0;
+	const char *msg;
+	int len = strlen(buf);
+
+	if ((usage = get_cpu_usage()) < 0)
+		msg = "....";
+	else
+	if (usage == 1000) {
+		msg = "init";
+		usage = 0;
+	} else
+		msg = get_msg(usage);
+
+	snprintf(buf + len, buflen - len, "%s (%%CPU:%.1f)", msg, usage);
+
+	return 0;
+}
+
 #ifdef TEST
+char *prog_name = NULL;
+
+void
+usage()
+{
+	printf(
+"Usage: %s [-dh]\n"
+	, prog_name);
+
+	exit(0);
+}
+
 int
 run(int period)
 {
 	int total_0, work_0;
 	int total_1, work_1;
 	float total_d, work_d, cpu_d;
+	char buf[512];
+	int buflen = 512;
 
 	total_0 = work_0 = 0;
 	while (1) {
-		if (get_cpuload(&total_1, &work_1) < 0) {
-			warnx("ERROR: failed to get cpu load.");
-			continue;
-		}
-		if (work_0) {
-			total_d = total_1 - total_0;
-			work_d = work_1 - work_0;
-			cpu_d = work_d / total_d * 100.;
-			printf("%s (%.3f)\n", get_msg(cpu_d), cpu_d);
-		}
-		total_0 = total_1;
-		work_0 = work_1;
+		strcpy(buf, "xxx ");
+		add_cpuload_msg(buf, buflen);
+		printf("%s\n", buf);
 		sleep(period);
 	}
 
