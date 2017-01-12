@@ -16,6 +16,7 @@
 #include "ioxutil/ioxutil.h"
 #include "xcurl_write_data.h"
 #include "xcurl_ext_debug.h"
+#include "getcpuload.h"
 
 char *g_server_url = NULL;
 char *g_auth_key = NULL;
@@ -65,6 +66,8 @@ mk_text(char *buf, size_t buf_len)
 	t = time(NULL);
 	tm = localtime(&t);
 	len = strftime(buf, buf_len, g_dialect, tm);
+	if (len >= buf_len)
+	       return -1;
 
 	return len < buf_len ? 0 : -1;
 }
@@ -86,16 +89,43 @@ mk_body(char *msg, char *buf, int buf_len)
 	return len < buf_len ? 0 : -1;
 }
 
+const char *
+get_loadmsg()
+{
+	static int total_0 = 0, work_0 = 0;
+	int total_1 = 0, work_1 = 0;
+	float total_d, work_d, cpu_d;
+
+	if (get_cpuload(&total_1, &work_1) < 0) {
+		warnx("ERROR: failed to get cpu load.");
+		return "...?";
+	}
+	if (!work_0) {
+		total_0 = total_1;
+		work_0 = work_1;
+		return "...";
+	}
+	
+	total_d = total_1 - total_0;
+	work_d = work_1 - work_0;
+	cpu_d = work_d / total_d * 100.;
+
+	total_0 = total_1;
+	work_0 = work_1;
+
+	return get_msg(cpu_d);
+}
+
 int
 post_data(CURL *curl)
 {
 	CURLcode res = 0;
 
 	char *text_buf;
-	int text_len = 128;
+	int text_len = 256;
 
 	char *msg_buf;
-	int msg_len = 256;
+	int msg_len = 512;
 
 	if ((text_buf = malloc(text_len)) == NULL)
 		err(1, "ERROR: malloc(text_buf)");
@@ -106,6 +136,7 @@ post_data(CURL *curl)
 	/* set body */
 	text_buf[0] = '\0';
 	mk_text(text_buf, text_len);
+	strcat(text_buf, get_loadmsg());
 
 	msg_buf[0] = '\0';
 	mk_body(text_buf, msg_buf, msg_len);
