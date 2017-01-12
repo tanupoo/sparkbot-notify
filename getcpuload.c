@@ -15,6 +15,7 @@ struct cpu_usage_tweet_t {
 	char *msg;
 };
 
+#if 0
 static struct cpu_usage_tweet_t tw[] = {
 	{  10., "..." },
 	{  20., "よゆう" },
@@ -23,6 +24,16 @@ static struct cpu_usage_tweet_t tw[] = {
 	{ 100., "ち、ちょっと…" },
 	{ 200., "もうだめ…" }
 };
+#else
+static struct cpu_usage_tweet_t tw[] = {
+	{  10., "..." },
+	{  20., "余裕です。" },
+	{  50., "まだ余裕です。" },
+	{  80., "まだいけます。" },
+	{ 100., "ち、ちょっと…。" },
+	{ 200., "もうだめ…"。 }
+};
+#endif
 
 static int f_debug = 0;
 
