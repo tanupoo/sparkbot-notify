@@ -15,25 +15,14 @@ struct cpu_usage_tweet_t {
 	char *msg;
 };
 
-#if 0
 static struct cpu_usage_tweet_t tw[] = {
-	{  10., "..." },
-	{  20., "よゆう" },
-	{  50., "ばっちこーい！" },
-	{  80., "まだいける！" },
-	{ 100., "ち、ちょっと…" },
-	{ 200., "もうだめ…" }
+	{  10., "level 5" },
+	{  20., "level 3" },
+	{  50., "level 2" },
+	{  80., "level 1" },
+	{ 100., "level 0" },
+	{ 200., "overloaded" },
 };
-#else
-static struct cpu_usage_tweet_t tw[] = {
-	{  10., "..." },
-	{  20., "余裕です。" },
-	{  50., "まだ余裕です。" },
-	{  80., "まだいけます。" },
-	{ 100., "ち、ちょっと…。" },
-	{ 200., "もうだめ…"。 }
-};
-#endif
 
 static int f_debug = 0;
 
