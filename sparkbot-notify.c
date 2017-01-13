@@ -93,7 +93,6 @@ int
 post_data(CURL *curl)
 {
 	CURLcode res = 0;
-	int len;
 
 	char *text_buf;
 	int text_len = 256;
@@ -109,7 +108,7 @@ post_data(CURL *curl)
 
 	/* set body */
 	text_buf[0] = '\0';
-	len = mk_text(text_buf, text_len);
+	mk_text(text_buf, text_len);
 #if 1
 	add_cpuload_msg(text_buf, text_len);
 #endif
